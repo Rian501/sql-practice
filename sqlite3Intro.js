@@ -45,6 +45,8 @@ createEmployeesTable()
 // // db all gives us back an array of all the results
 function query () {
     db.all("SELECT * FROM employees", (err, allRows) => {
+        errorHandler(err);
+        console.log(allRows);
         // allRows is an array containing each row from the query
         allRows.forEach(each => {
             console.log(each.id, each.first + ' ' + each.last);
@@ -62,3 +64,10 @@ const errorHandler = (err) => {
       console.log(`Msg: ${err}`);
     };
   };
+
+
+
+  db.close(err => {
+    errorHandler(err); // Use custom error handling function
+    console.log('Database closed'); // Will only log on successful close
+  });

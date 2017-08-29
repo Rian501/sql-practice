@@ -5,10 +5,19 @@ SELECT * FROM Genre
 -- Using the INSERT statement, add one of your favorite artists to the Artist table.
 INSERT INTO artist (ArtistId, ArtistName, YearEstablished)
 VALUES (29, 'The Arcs', 2009);
+-- -- don't have to include the artistID because it was set to auto increment.
+-- You can use SELECT along with the INSERT INTO...
+-- like:
+-- INSERT INTO Album (Title, ReleaseDate, AlbumLength, Label,ArtistId, GenreId)
+-- SELECT "Georgetown Station", 1986, 274, "Whatever", ar.ArtistId, g.GenreId
+-- FROM Artist ar, Genre genre
+-- WHERE ar.ArtistName = "The Model Citizens"
+-- AND g.Label = "Rock"
+
 
 -- Using the INSERT statement, add one, or more, albums by your artist to the Album table.
 INSERT INTO album (AlbumId, Title, ReleaseDate, AlbumLength, Label, ArtistId, GenreId)
-Values (25, 'Yours, Dreamily,', '9/4/2015', 4933, 'Nonesuch', 29, 2);
+VALUES (25, 'Yours, Dreamily,', '9/4/2015', 4933, 'Nonesuch', 29, 2);
 
 -- Using the INSERT statement, add some songs that are on that album to the Song table.
 INSERT INTO song (SongId, Title, SongLength, ReleaseDate,GenreId,ArtistId,AlbumId)
@@ -22,21 +31,26 @@ VALUES (25, 'The Arc', 827, '9/4/2015', 2, 29, 25);
 -- Reminder: Direction of join matters. Try the following statements and see the difference in results.
 -- SELECT a.Title, s.Title FROM Album a LEFT JOIN Song s ON s.AlbumId = a.AlbumId;
 -- SELECT a.Title, s.Title FROM Song s LEFT JOIN Album a ON s.AlbumId = a.AlbumId;
--- SELECT r.ArtistName AS 'Artist', a.Title AS 'Album', s.Title AS 'Song'
--- FROM Artist r, Album a, Song s 
--- WHERE a.ArtistId = r.ArtistId 
--- AND s.AlbumId = a.AlbumId
--- AND artistname = 'The Arcs';
+SELECT r.ArtistName AS 'Artist', a.Title AS 'Album', s.Title AS 'Song'
+FROM Artist r, Album a, Song s 
+WHERE a.ArtistId = r.ArtistId 
+AND s.AlbumId = a.AlbumId
+AND artistname = 'The Arcs';
+
 
 SELECT r.ArtistName AS 'Artist', a.Title AS 'Album', s.Title AS 'Song'
 FROM Artist r
 LEFT JOIN Album a ON r.artistId = a.artistId
 LEFT JOIN Song s ON s.albumId = a.AlbumId
 WHERE artistname = 'The Arcs';
+-- dont' actually need to use left join on the artist/album, but it does matter on song and ...
+
+
 -- Write a SELECT statement to display how many songs exist for each album. You'll need to use the COUNT() function and the GROUP BY keyword sequence.
-SELECT COUNT(songId), a.title
+SELECT a.title, COUNT(songId) 'Total Songs'
 FROM song s LEFT JOIN album a ON s.AlbumId = a.AlbumId
-GROUP BY s.albumId;
+GROUP BY s.albumId
+ORDER BY count(songId) DESC;
 
 
 -- Write a SELECT statement to display how many songs exist for each artist. You'll need to use the COUNT() function and the GROUP BY keyword sequence.
